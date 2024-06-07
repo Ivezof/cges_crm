@@ -1,29 +1,29 @@
-<div class="nav-panel">
-    <div class="burger-menu">
+<div class="nav-panel" id="nav_panel">
+    <div class="burger-menu" id="bm">
         <div class="burger-line"></div>
         <div class="burger-line"></div>
         <div class="burger-line"></div>
     </div>
     <div class="buttons-menu">
-        <div class="panel nav-item">
+        <a href="{{ route('dashboard') }}" class="panel nav-item @if($active == 'dashboard') active @endif">
             <img src="{{ asset('storage/img/panel-icon.svg') }}" class="icon-btn" alt="panel">
             <div class="btn-name">Панель</div>
-        </div>
-        <div class="clients nav-item">
+        </a>
+        <a href="{{ route('clients') }}" class="clients nav-item @if($active == 'clients') active @endif">
             <img src="{{ asset('storage/img/clients-icon.svg') }}" class="icon-btn" alt="panel">
             <div class="btn-name">Клиенты</div>
-        </div>
-        <div class="payments nav-item">
+        </a>
+        <a href="#" class="payments nav-item @if($active == 'payments') active @endif">
             <img src="{{ asset('storage/img/payments-icon.svg') }}" class="icon-btn" alt="panel">
             <div class="btn-name">Платежи</div>
-        </div>
-        <div class="clients nav-item">
+        </a>
+        <a href="#" class="clients nav-item @if($active == 'orders') active @endif">
             <img src="{{ asset('storage/img/orders-icon.svg') }}" class="icon-btn" alt="panel">
             <div class="btn-name">Заказы</div>
-        </div>
-        <div class="clients nav-item">
+        </a>
+        <a href="#" class="clients nav-item @if($active == 'workers') active @endif">
             <img src="{{ asset('storage/img/workers-icon.svg') }}" class="icon-btn" alt="panel">
             <div class="btn-name">Сотрудники</div>
-        </div>
+        </a>
     </div>
 </div>

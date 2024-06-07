@@ -19,7 +19,7 @@ class RoleMiddleware
         if (!auth()->check()) {
             abort(404);
         }
-        if(!auth()->user()->hasRole($role)) {
+        if(!auth()->user()->checkRole($role)) {
             abort(404);
         }
         return $next($request);

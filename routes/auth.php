@@ -45,10 +45,9 @@ Route::middleware('auth')->group(function () {
     Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 });
+Route::get('register', [RegisteredUserController::class, 'create'])
+    ->name('register');
+Route::post('register', [RegisteredUserController::class, 'store']);
+Route::middleware('role:administrator')->group(function () {
 
-Route::middleware('perm:register')->group(function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])
-        ->name('register');
-
-    Route::post('register', [RegisteredUserController::class, 'store']);
 });
