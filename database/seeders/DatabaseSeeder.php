@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Client;
 use App\Models\Order;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $orders = Order::factory()->count(20)->create();
+        $clients = Client::factory()->count(50)->create();
+        $orders = Order::factory()->count(30)->create();
     }
 }
