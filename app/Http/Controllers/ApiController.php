@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use App\Models\Order;
 use App\Models\Payments;
-use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
@@ -50,7 +49,6 @@ class ApiController extends Controller
         $order_by = $request->get('orderBy')[0];
         $order_by_type = $request->get('orderBy')[1];
         $current_page = $request->get('page');
-        Debugbar::info($order_by);
         if ($order_by == 'orders_count') {
             $clients = Client::all();
             if ($order_by_type == 'asc') {
@@ -62,7 +60,6 @@ class ApiController extends Controller
 
                     return $client->getOrdersCountAttribute();
                 });
-                Debugbar::info($sorted);
             }
 
             $paginator = new \Illuminate\Pagination\LengthAwarePaginator($sorted->slice(($current_page - 1) * $per_page , $per_page)->values()->all(), $sorted->count(), $per_page, $current_page, ['path' => request()->url(), 'query' => request()->query()]);
@@ -80,7 +77,6 @@ class ApiController extends Controller
         $clients_controller = new ClientsController();
         $client_not_found = [];
         foreach ($clients as $client) {
-            Debugbar::info($client);
             $result = $clients_controller->deleteClient(number_format($client['id']));
             if ($result === null) {
                 $client_not_found[] = $client['id'];
@@ -129,7 +125,6 @@ class ApiController extends Controller
         $payment_controller = new PaymentsController();
         $payment_not_found = [];
         foreach ($payments as $payment) {
-            Debugbar::info($payment);
             $result = $payment_controller->deletePayment(number_format($payment['id']));
             if ($result === null) {
                 $payment_not_found[] = $payment['id'];
