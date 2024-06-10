@@ -2,7 +2,7 @@ window.onload = () => {
     console.log(window.document)
     let burger_btn = document.getElementById('bm');
     let nav_menu = document.getElementById('nav_panel');
-    let nav_item = document.getElementsByClassName('active')[0];
+    let nav_item = document.getElementsByClassName('nav-active')[0];
     let menu_status = 0;
     burger_btn.onclick = () => {
         if (menu_status === 0) {
