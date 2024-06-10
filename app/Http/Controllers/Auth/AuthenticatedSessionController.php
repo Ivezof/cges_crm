@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +16,6 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
-        Debugbar::info('login controller');
         return view('auth.login');
     }
 
@@ -26,7 +24,6 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        Debugbar::info($request);
         $request->authenticate();
 
         $request->session()->regenerate();
