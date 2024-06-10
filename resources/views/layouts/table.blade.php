@@ -5,8 +5,8 @@
     @foreach($keys as $key => $v)
         keys['{{$key}}'] = '{{ $v }}'
     @endforeach
-    @foreach($head as $name => $v)
-        heads.push('{{ $name }}')
+    @foreach($head as $head_name => $v)
+        heads.push('{{ $head_name }}')
     @endforeach
 
 </script>
@@ -35,7 +35,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="edit_modal_label">Modal title</h1>
+                    <h1 class="modal-title fs-5" id="edit_modal_label">Редактирование</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -64,16 +64,16 @@
                 Редактировать
             </div>
         </div>
-        <table class="table clients-table_table table-bordered" id="table" url-method="/table/clients">
+        <table class="table clients-table_table table-bordered" id="table">
             <thead class="table-head align-middle">
             <tr>
-                <th onclick="this.querySelector('input').checked = !this.querySelector('input').checked; pick_all_items(this.querySelector('input')); ">
+                <th onclick="this.querySelector('input').checked = !this.querySelector('input').checked; pick_all_items(this.querySelector('input')); " class="checkbox_th">
                     <label>
                         <input type="checkbox" class="table-checkbox form-check-input" id="all_check">
                     </label>
                 </th>
                 @foreach($head as $thValue => $thFilter)
-                    <th scope="col" @if($thFilter == 'filter') class="filtered" @endif>{{ $thValue }}</th>
+                    <th scope="col" @if($thFilter[0] == 'filter') class="filtered" orderBy="{{ $thFilter[1] }}" status="0" @endif>{{ $thValue }}</th>
                 @endforeach
             </tr>
             </thead>

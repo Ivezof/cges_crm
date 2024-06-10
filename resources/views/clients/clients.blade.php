@@ -12,7 +12,7 @@
         <div class="main-content">
             <div class="nav">@include('layouts.nav-panel', ['active' => 'clients'])</div>
             <div class="client-table">
-                @include('layouts.table', ['name' => 'Клиенты', 'head' => ['ФИО' => 'nofilter', 'Почта' => 'nofilter', 'Номер телефона' => 'nofilter', 'Телеграм' => 'nofilter', 'Активные заказы' => 'filter'], 'keys' => ['fio' => 'edit', 'email' => 'edit', 'phone' => 'edit', 'telegram' => 'edit', 'orders_count' => 'no_edit']])
+                @include('layouts.table', ['name' => 'Клиенты', 'head' => ['ФИО' => ['nofilter'], 'Почта' => ['nofilter'], 'Номер телефона' => ['nofilter'], 'Телеграм' => ['nofilter'], 'Активные заказы' => ['filter', 'orders_count']], 'keys' => ['fio' => 'edit', 'email' => 'edit', 'phone' => 'edit', 'telegram' => 'edit', 'orders_count' => 'no_edit']])
             </div>
         </div>
 

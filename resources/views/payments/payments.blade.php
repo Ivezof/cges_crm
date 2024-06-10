@@ -12,7 +12,7 @@
     <div class="main-content">
         <div class="nav">@include('layouts.nav-panel', ['active' => 'payments'])</div>
         <div class="client-table">
-            @include('layouts.table', ['name' => 'Платежи', 'head' => ['Сумма' => 'filter', 'Оплачено' => 'nofilter', 'Заказ' => 'nofilter'], 'keys' => ['sum' => 'edit', 'paid' => 'edit', 'order_id' => 'no_edit']])
+            @include('layouts.table', ['name' => 'Платежи', 'head' => ['Сумма' => ['filter', 'sum'], 'Оплачено' => ['nofilter'], 'Заказ' => ['nofilter']], 'keys' => ['sum' => 'edit', 'paid' => 'edit', 'order_id' => 'no_edit']])
         </div>
     </div>
 
