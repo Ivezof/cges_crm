@@ -1,4 +1,4 @@
-<div class="position-fixed bottom-5 end-0 p-3" style="z-index: 11" id="divMsg">
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11" id="divMsg">
     <div id="msg" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
         <div class="toast-header">
             <strong class="me-auto"></strong>
@@ -9,3 +9,4 @@
         </div>
     </div>
 </div>
+<script src="{{ asset('/storage/js/message.js') }}"></script>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use App\Models\Order;
 use App\Models\Payments;
+use App\Models\User;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
@@ -13,23 +15,32 @@ use Illuminate\Http\Request;
 class ApiController extends Controller
 {
     public function getStats(Request $request) {
-        // 0 - активный
-        // 1 - на проверке
-        // 2 - отменен
-        // 3 - просрочен
+        // 0 - в обработке
+        // 1 - ожидает платежа
+        // 2 - активный
+        // 3 - на проверке
         // 4 - выполнен
+        // 5 - отменен
         $fromtime = Carbon::createFromTimestamp($request->get('from'))->toDate();
         $totime = Carbon::createFromTimestamp($request->get('to'))->toDate(); // http://127.0.0.1:8000/api/getStats?from=1716854400&to=1716940800
 
         $complete = Order::whereBetween('created_at', [$fromtime, $totime])->where('status', '=', 4)->get();
-        $active = Order::whereBetween('created_at', [$fromtime, $totime])->where('status', '=', 0)->get();
-        $canceled = Order::whereBetween('created_at', [$fromtime, $totime])->where('status', '=', 2)->get();
-        $oncheck = Order::whereBetween('created_at', [$fromtime, $totime])->where('status', '=', 1)->get();
-        $expired = Order::whereBetween('created_at', [$fromtime, $totime])->where('status', '=', 3)->get();
+        $active = Order::whereBetween('created_at', [$fromtime, $totime])->where('status', '=', 2)->get();
+        $canceled = Order::whereBetween('created_at', [$fromtime, $totime])->where('status', '=', 5)->get();
+        $oncheck = Order::whereBetween('created_at', [$fromtime, $totime])->where('status', '=', 3)->get();
 
         $data = ['completed' => count($complete), 'canceled' => count($canceled),
-            'active' => count($active), 'oncheck' => count($oncheck), 'expired' => count($expired)];
+            'active' => count($active), 'oncheck' => count($oncheck)];
         return response()->json($data);
+    }
+
+    public function getAllOrders(Request $request) {
+        $orders = Order::with('client')->with('workers')->with('payment')->orderByDesc('id')->get();
+        return response()->json($orders, 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function getOrder($id) {
+        return response()->json(Order::find($id), 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
     }
 
     public function getOrders(Request $request) {
@@ -73,7 +84,7 @@ class ApiController extends Controller
 
     public function deleteClients(Request $request): JsonResponse
     {
-        $clients = $request->get('clients');
+        $clients = $request->get('client');
         $clients_controller = new ClientsController();
         $client_not_found = [];
         foreach ($clients as $client) {
@@ -148,6 +159,92 @@ class ApiController extends Controller
         $payment_controller = new PaymentsController();
         $payment = $payment_controller->getPayment($payment_id);
         return response()->json(['payments' => $payment], 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
+    }
+
+
+    public function getWorkers(Request $request): JsonResponse
+    {
+        $per_page = 10;
+        if ($request->get('perPage')) {
+            $per_page = $request->get('perPage');
+        }
+        $workers = User::paginate($per_page);
+        return response()->json($workers, 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function deleteWorker(Request $request): JsonResponse
+    {
+        $workers = $request->get('workers');
+        $worker_controller = new WorkersController();
+        $worker_not_found = [];
+        foreach ($workers as $worker) {
+            $result = $worker_controller->deleteWorker(number_format($worker['id']));
+            if ($result === null) {
+                $worker_not_found[] = $worker['id'];
+            }
+        }
+        return response()->json(['payments' => $workers, 'not_found' => ["id" => $worker_not_found]], 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function workerUpdate(Request $request): JsonResponse
+    {
+        $worker_controller = new WorkersController();
+        $worker_obj = ['id' => $request->get('id'), 'name' => $request->get('name'), 'email' => $request->get('email')];
+        $worker = $worker_controller->updateWorker($worker_obj);
+
+        return response()->json(['workers' => $worker], 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function getWorker(Request $request): JsonResponse
+    {
+        $worker_id = $request->get('id');
+        $worker_controller = new WorkersController();
+        $worker = $worker_controller->getWorker($worker_id);
+        return response()->json(['workers' => $worker], 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function getAllWorkers(): JsonResponse
+    {
+        $worker_controller = new WorkersController();
+        return response()->json(['workers' => $worker_controller->getAllWorkers()], 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
+    }
+
+
+    public function orderUpdate(Request $request) {
+        $order_id = $request->get('order_id');
+        $description = $request->get('description');
+        $address = $request->get('address');
+        $budget = $request->get('budget');
+        $spent = $request->get('spent');
+        $workers = $request->get('workers');
+        $status = $request->get('status');
+        $payment_status = $request->get('payment_status');
+
+        Debugbar::info($spent);
+
+        $order = Order::find($order_id);
+        if ($description) {
+            $order->description = $description;
+        }
+
+        if ($address) {
+            $order->address = $address;
+        }
+        if ($budget) {
+            $order->budget = $budget;
+        }
+        if ($spent) {
+            $order->spent = $spent;
+        }
+        if ($workers) {
+            foreach ($workers as $worker) {
+                $order->workers()->attach($worker);
+            }
+        }
+
+        $order->status = $status;
+        $order->payment()->update(['paid' => $payment_status]);
+        $order->save();
     }
 
 

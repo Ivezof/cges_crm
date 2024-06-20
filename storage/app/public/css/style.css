@@ -69,8 +69,8 @@ body {
 
 
 .login-form {
-    max-width: 440px;
-    margin: 25px auto;
+    width: 440px;
+    margin: 45px auto;
 }
 
 .login-form input {
@@ -135,6 +135,9 @@ body {
 
 .icon-btn {
     max-width: 30px;
+    width: 30px;
+    height: 48px;
+    filter: invert(69%) sepia(23%) saturate(1053%) hue-rotate(172deg) brightness(96%) contrast(91%);
 }
 
 .btn-name {
@@ -541,3 +544,66 @@ textarea {
     width: 50px;
     height: 50px;;
 }
+
+.hopper-title {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    white-space: nowrap;
+}
+
+.hoppers {
+    margin-top: 40px;
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    max-height: 700px;
+    padding: 0 5px 0 5px;
+}
+
+.gray-bb {
+    border-bottom: 2px solid #C1C1C1;
+}
+
+.yellow-bb {
+    border-bottom: 2px solid #FFBE00;
+}
+
+.green-bb {
+    border-bottom: 2px solid #8BC34A
+}
+
+.blue-bb {
+    border-bottom: 2px solid #6cb5ea;
+}
+
+.purple-bb {
+    border-bottom: 2px solid #9768D1;
+}
+
+.hopper {
+    min-width: 290px;
+}
+
+.hopper-card {
+    cursor: pointer;
+}
+
+.badge-worker {
+    font-size: 16px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.selected_workers {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+

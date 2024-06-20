@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use Debugbar;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +29,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('index', absolute: false));
+        if (auth()->user()->role < 2) {
+            Debugbar::info(auth()->user()->role);
+            return redirect()->route('clients');
+        } else {
+            return redirect()->route('index');
+        }
+
     }
 
     /**

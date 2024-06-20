@@ -27,7 +27,7 @@ class PaymentsController extends Controller
     public function deletePayment(int $payment_id): ?bool
     {
         $payment = Payments::find($payment_id);
-        return $payment?->delete();
+        return $payment->delete();
     }
 
     public function updatePayment($payment_obj): Model|Collection|array|Payments|null

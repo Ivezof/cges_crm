@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $client_id
@@ -53,8 +53,17 @@ class Order extends Model
         'status'
     ];
 
-    public function Payment(): BelongsTo
+    public function payment(): HasOne
     {
-        return $this->belongsTo(Payments::class, 'id', 'payment_id');
+        return $this->hasOne(Payments::class);
+    }
+
+    public function workers() {
+        return $this->belongsToMany(User::class, 'user_order', 'order_id', 'user_id');
+    }
+
+    public function client(): BelongsTo
+    {
+        return $this->belongsTo(Client::class);
     }
 }

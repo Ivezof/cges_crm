@@ -12,7 +12,7 @@
         <div class="mb-3">
             <label for="name" class="form-label">ФИО</label>
             <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" value="{{ old('name') }}" required>
-            <div class="invalid-feedback" format-text='Допустимые символы: "а" до "я", пробел'>
+            <div class="invalid-feedback" format-text='Допустимые символы: от "а" до "я", пробел'>
             </div>
         </div>
         <div class="mb-3">

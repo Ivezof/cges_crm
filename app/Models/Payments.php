@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $order_id
@@ -37,8 +38,8 @@ class Payments extends Model
         'paid'
     ];
 
-    public function Order(): HasOne
+    public function Order(): BelongsTo
     {
-        return $this->hasOne(Order::class, 'id', 'order_id');
+        return $this->belongsTo(Order::class);
     }
 }

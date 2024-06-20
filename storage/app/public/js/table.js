@@ -3,13 +3,13 @@ let per_page = 10
 
 const delete_confirm_modal = new bootstrap.Modal('#delete_confirm_modal');
 
-const msg = new bootstrap.Toast(document.getElementById('msg'));
+
 
 const editModal = $('#edit_modal');
 
 const edit_modal_bs = new bootstrap.Modal('#edit_modal');
 
-const divMsg = $('#divMsg');
+
 
 let order_by = ['id', 'asc'];
 
@@ -233,21 +233,6 @@ function convertFormToJSON(form) {
         json[el.getAttribute('id')] = $(el).val() || "";
     });
     return json;
-}
-
-function alertMsg(title, type, msg_text, text_color) {
-    divMsg.find('#msg').addClass(`bg-${type} text-${text_color}`);
-    divMsg.find('strong').text(title);
-    divMsg.find('.toast-body').text(msg_text);
-
-    msg.show()
-    const msgObj = $('#msg');
-    msgObj.on('hidden.bs.toast', () => {
-        msgObj.find('strong').text('');
-        msgObj.find('.toast-body').text('');
-        msgObj.removeClass(`bg-${type}`);
-        msgObj.removeClass(`text-${text_color}`);
-    });
 }
 
 $('#edit_btn').on('click', async () => {

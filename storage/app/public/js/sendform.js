@@ -28,8 +28,12 @@ window.onload = () => {
         console.log(data);
         await axios.post('/order', data)
             .then((response) => {
-                console.log(435345)
-                modal.show()
+                if (!response["data"]['verified']) {
+                    modal.show()
+                } else {
+                    modalVerify.show();
+                }
+
             })
             .catch(error => {
                 if (error.response.status === 422) {

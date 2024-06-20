@@ -1,7 +1,16 @@
 <nav class="top-nav">
     <div class="content">
         <div class="nav-header">
-            <a class="logo" href="@auth {{ route('index') }} @else {{ route('client.form') }} @endauth">
+            @auth
+                @administrator
+                    <a class="logo" href="{{ route('index') }}">
+                @else
+                    <a class="logo" href="{{ route('clients') }}">
+                @endadministrator
+            @else
+                 <a class="logo" href="{{ route('clients.form') }}">
+            @endauth
+
                 <img src="{{ asset('storage/img/logo.svg') }}" alt="logo">
                 <img src="{{ asset('storage/img/logo-text.svg') }}" alt="logo-text" class="logo-text">
             </a>
