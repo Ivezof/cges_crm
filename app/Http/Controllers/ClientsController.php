@@ -6,7 +6,6 @@ use App\Http\Requests\ClientRequest;
 use App\Models\Client;
 use App\Models\Order;
 use App\Notifications\VerifyEmail;
-use Debugbar;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 
@@ -59,7 +58,6 @@ class ClientsController extends Controller
     }
     public function verifyEmail(Client $client): bool
     {
-        Debugbar::info(Client::where('email', '=', $client->email)->where('email_verify', '=', true)->exists());
         if (Client::where('email', '=', $client->email)->where('email_verify', '=', true)->exists()) {
             return true;
         }
